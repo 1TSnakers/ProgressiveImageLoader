@@ -17,7 +17,7 @@ Here is an example HTML file:
   <div id="image-container"></div>
 
   <!-- Include your library -->
-  <script src="progressive-image-loader.js"></script>
+  <script src=""progressive-image-loader.js"></script>
 
   <script>
     // Instantiate the loader
@@ -41,13 +41,12 @@ Here is an example HTML file:
 
 ```
 In this example, the images are:
+<details>
 <br>
-![](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/330px-Coat_of_arms_of_Mexico.svg.png)
-<br>
-![](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/529px-Coat_of_arms_of_Mexico.svg.png)
-<br>
-![](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/847px-Coat_of_arms_of_Mexico.svg.png)
-<br>
-![](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/1129px-Coat_of_arms_of_Mexico.svg.png)
-<br>
-![](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/2259px-Coat_of_arms_of_Mexico.svg.png)
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/330px-Coat_of_arms_of_Mexico.svg.png" alt="drawing" width="160"/>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/529px-Coat_of_arms_of_Mexico.svg.png" alt="drawing" width="160"/>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/847px-Coat_of_arms_of_Mexico.svg.png" alt="drawing" width="160"/>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/1129px-Coat_of_arms_of_Mexico.svg.png" alt="drawing" width="160"/>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/2259px-Coat_of_arms_of_Mexico.svg.png" alt="drawing" width="160"/>
+Courtesy of wikipedia
+</details>
