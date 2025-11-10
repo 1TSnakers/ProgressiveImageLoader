@@ -1,6 +1,8 @@
 # ProgressiveImageLoader
 Loads images progressively. Level of detail for images
 
+You put images into an array in order of detail (least to most)
+
 Here is an example HTML file:
 ```html
 <!DOCTYPE html>
@@ -38,3 +40,14 @@ Here is an example HTML file:
 </html>
 
 ```
+In this example, the images are:
+<br>
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/330px-Coat_of_arms_of_Mexico.svg.png)
+<br>
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/529px-Coat_of_arms_of_Mexico.svg.png)
+<br>
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/847px-Coat_of_arms_of_Mexico.svg.png)
+<br>
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/1129px-Coat_of_arms_of_Mexico.svg.png)
+<br>
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/2259px-Coat_of_arms_of_Mexico.svg.png)
