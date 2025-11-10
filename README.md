@@ -3,6 +3,8 @@ Loads images progressively. Level of detail for images
 
 You put images into an array in order of detail (least to most)
 
+⚠️ This could increase internet usage as you are requesting like 3 images instead of just one, but has the benefit of allowing the user to see _somthing_ quickly
+
 Here is an example HTML file:
 ```html
 <!DOCTYPE html>
