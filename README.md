@@ -51,3 +51,4 @@ In this example, the images are:
 <br>
 Courtesy of wikipedia
 </details>
+Feel free to improve my bad code!
