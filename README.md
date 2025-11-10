@@ -1,4 +1,4 @@
-# ProgressiveImageLoader
+# Progressive Image Loader
 Loads images progressively. Level of detail for images
 
 You put images into an array in order of detail (least to most)
