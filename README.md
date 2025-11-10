@@ -5,7 +5,7 @@ You put images into an array in order of detail (least to most)
 
 ⚠️ This could increase internet usage as you are requesting like 3 images instead of just one, but has the benefit of allowing the user to see _somthing_ quickly
 
-Here is an example HTML file and web demo: https://1tsnakers.github.io/ProgressiveImageLoader/index.html
+Here is an example HTML file and web demo: https://1tsnakers.github.io/ProgressiveImageLoader
 ```html
 <!DOCTYPE html>
 <html lang="en">
