@@ -7,6 +7,9 @@ on:
       - main
       - master
 
+permissions:
+  contents: write  # allow workflow to commit changes
+
 jobs:
   ruin:
     runs-on: ubuntu-latest
@@ -14,8 +17,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          persist-credentials: false  # we'll handle the token manually
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -33,14 +34,15 @@ jobs:
           echo "Running image_ruiner.py..."
           python image_ruiner.py
 
-      - name: Commit and push degraded images to separate branch
-        working-directory: images
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure Git authentication
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+
+      - name: Commit and push degraded images
+        working-directory: images
+        run: |
           git add pixel_degraded_pngs
           git diff --cached --quiet || git commit -m "Add/update pixel-degraded images"
-          # Push to a dedicated branch
-          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:pixel-degraded-images --force
+          git push origin HEAD:pixel-degraded-images --force
