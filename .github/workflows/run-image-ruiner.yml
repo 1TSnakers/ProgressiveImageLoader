@@ -1,8 +1,8 @@
 name: Run Image Ruiner
 
 on:
-  workflow_dispatch:  # Run manually from the Actions tab
-  push:               # Or automatically on each push
+  workflow_dispatch:
+  push:
     branches:
       - main
       - master
@@ -30,3 +30,9 @@ jobs:
         run: |
           echo "Running image_ruiner.py..."
           python image_ruiner.py
+
+      - name: Upload degraded images
+        uses: actions/upload-artifact@v4
+        with:
+          name: pixel-degraded-images
+          path: images/pixel_degraded_pngs
