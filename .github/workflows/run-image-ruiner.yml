@@ -45,4 +45,4 @@ jobs:
         run: |
           git add pixel_degraded_pngs
           git diff --cached --quiet || git commit -m "Add/update pixel-degraded images"
-          git push origin HEAD:pixel-degraded-images --force
+          git push origin HEAD:main
