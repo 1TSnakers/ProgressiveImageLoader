@@ -1,7 +1,7 @@
 name: Run Image Ruiner
 
 on:
-  workflow_dispatch:  # manual trigger
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -15,7 +15,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          persist-credentials: true  # needed for push to work
+          persist-credentials: false  # we'll handle the token manually
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -35,9 +35,11 @@ jobs:
 
       - name: Commit and push degraded images
         working-directory: images
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add pixel_degraded_pngs
           git diff --cached --quiet || git commit -m "Add/update pixel-degraded images"
-          git push
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} HEAD:${{ github.ref }}
