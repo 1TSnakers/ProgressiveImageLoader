@@ -43,4 +43,4 @@ jobs:
           git add pixel_degraded_pngs
           git diff --cached --quiet || git commit -m "Add/update pixel-degraded images"
           # Push to a dedicated branch
-          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} HEAD:pixel-degraded-images --force
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:pixel-degraded-images --force
