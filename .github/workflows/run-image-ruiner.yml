@@ -1,8 +1,8 @@
 name: Run Image Ruiner
 
 on:
-  workflow_dispatch:  # allows manual run from GitHub Actions tab
-  push:               # automatically run on every push
+  workflow_dispatch:  # Run manually from the Actions tab
+  push:               # Or automatically on each push
     branches:
       - main
       - master
@@ -25,6 +25,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install pillow
 
-      - name: Run image ruiner
+      - name: Run Image Ruiner
+        working-directory: images
         run: |
-          python images/image_ruiner.py
+          echo "Running image_ruiner.py..."
+          python image_ruiner.py
