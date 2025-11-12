@@ -42,4 +42,4 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add pixel_degraded_pngs
           git diff --cached --quiet || git commit -m "Add/update pixel-degraded images"
-          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} HEAD:${{ github.ref }}
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} HEAD:pixel-degraded-images
