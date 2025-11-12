@@ -1,57 +1,51 @@
 from PIL import Image
 import os
 
-def pixel_degrade_png(input_path, output_folder, steps=10, min_scale=0.1, enlarge_back=False):
+def pixel_degrade_png(image_path, output_dir, steps=8, min_scale=0.1, enlarge_back=False):
     """
-    Creates progressively lower-resolution versions of an image (PNG format),
-    and saves the original image too.
-
-    Args:
-        input_path (str): Path to the input image file.
-        output_folder (str): Directory where degraded images will be saved.
-        steps (int): Number of progressively smaller images.
-        min_scale (float): Minimum scale factor (e.g., 0.1 = 10% of original size).
-        enlarge_back (bool): If True, re-enlarges degraded images back to the original size.
+    Create progressively degraded versions of a PNG image by reducing pixel resolution.
+    
+    Parameters:
+    - image_path: str, path to the original PNG
+    - output_dir: str, directory to save degraded PNGs
+    - steps: int, number of degradation steps
+    - min_scale: float, smallest scale factor for the last degraded image
+    - enlarge_back: bool, whether to enlarge back to original size after downscaling
     """
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
 
-    image = Image.open(input_path).convert("RGBA")
-    width, height = image.size
+    os.makedirs(output_dir, exist_ok=True)
+    img = Image.open(image_path)
+    width, height = img.size
 
-    # Save original
-    original_path = os.path.join(output_folder, "original.png")
-    image.save(original_path, "PNG")
-    print(f"Saved original: {original_path} ({width}x{height})")
+    # Generate degradation scales (including the original)
+    scales = [1.0 - i * (1.0 - min_scale) / (steps-1) for i in range(steps)]
 
-    # Calculate scale step
-    scale_step = (1.0 - min_scale) / steps
+    for idx, scale in enumerate(scales):
+        new_w = max(1, int(width * scale))
+        new_h = max(1, int(height * scale))
 
-    for i in range(steps):
-        scale = 1.0 - (i * scale_step)
-        new_width = max(1, int(width * scale))
-        new_height = max(1, int(height * scale))
+        degraded = img.resize((new_w, new_h), Image.NEAREST)
 
-        # Resize down
-        resized = image.resize((new_width, new_height), Image.LANCZOS)
-
-        # Optionally enlarge back to original to show blockiness
         if enlarge_back:
-            resized = resized.resize((width, height), Image.NEAREST)
+            degraded = degraded.resize((width, height), Image.NEAREST)
 
-        output_path = os.path.join(output_folder, f"degraded_{int(scale * 100)}.png")
-        resized.save(output_path, "PNG")
-        print(f"Saved: {output_path} ({new_width}x{new_height})")
+        # Save each degraded image with progressive numbering
+        output_path = os.path.join(output_dir, f"degraded_{int(scale*100)}.png")
+        degraded.save(output_path)
 
-    print("\nDone! All pixel-degraded PNGs (and the original) are in:", output_folder)
-
+    # Also save a degraded version of the original that matches the same “degradation style”
+    # This will make the original appear pixelated similarly
+    deg_original = img.resize((max(1,int(width*scales[-1])), max(1,int(height*scales[-1]))), Image.NEAREST)
+    if enlarge_back:
+        deg_original = deg_original.resize((width, height), Image.NEAREST)
+    deg_original.save(os.path.join(output_dir, "original.png"))
 
 # Example usage
 if __name__ == "__main__":
     pixel_degrade_png(
-        "sample.png",
-        "pixel_degraded_pngs",
+        "images/sample.png",
+        "images/pixel_degraded_pngs",
         steps=8,
         min_scale=0.1,
-        enlarge_back=True
+        enlarge_back=False
     )
