@@ -33,7 +33,7 @@ jobs:
           echo "Running image_ruiner.py..."
           python image_ruiner.py
 
-      - name: Commit and push degraded images
+      - name: Commit and push degraded images to separate branch
         working-directory: images
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -42,4 +42,5 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add pixel_degraded_pngs
           git diff --cached --quiet || git commit -m "Add/update pixel-degraded images"
-          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} HEAD:pixel-degraded-images
+          # Push to a dedicated branch
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} HEAD:pixel-degraded-images --force
