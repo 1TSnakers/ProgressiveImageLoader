@@ -17,11 +17,8 @@
   <script type="module">
     import imageList from "./images/image_list.js";
   
-    const container = document.getElementById("image-container");
-    container.innerHTML = `<img src="${imageList[0]}" style="width:100%;height:auto;">`;
-  
     new ProgressiveImageLoader({
-      container: container,
+      container: document.getElementById("image-container"),
       images: imageList,
       width: 1800,
       fadeDuration: 0,
