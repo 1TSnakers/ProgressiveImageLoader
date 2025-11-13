@@ -42,7 +42,7 @@ def pixel_degrade_png(image_path, output_dir="pixel_degraded_pngs", steps=8):
         filename = f"degraded_{percent}.png"
         filepath = os.path.join(output_path, filename)
         degraded.save(filepath)
-        images.append(f"{output_dir}/{filename}")  # relative path for JS array
+        images.append(f"images/pixel_degraded_pngs/{filename}")  # relative path for JS array
 
     # Save JS array in the script folder
     js_path = os.path.join(script_dir, "image_list.js")
