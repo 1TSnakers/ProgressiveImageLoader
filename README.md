@@ -26,11 +26,9 @@ Here is an example HTML file and web demo: https://1tsnakers.github.io/Progressi
     new ProgressiveImageLoader({
       container: document.getElementById("image-container"),
       images: [
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/330px-Coat_of_arms_of_Mexico.svg.png",
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/529px-Coat_of_arms_of_Mexico.svg.png",
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/847px-Coat_of_arms_of_Mexico.svg.png",
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/1129px-Coat_of_arms_of_Mexico.svg.png",
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/2259px-Coat_of_arms_of_Mexico.svg.png"
+        "bad-image.png",
+        "mid-image.png",
+        "good-image.png"
       ],
       width: 600,       // optional
       height: 600,      // optional
@@ -42,15 +40,19 @@ Here is an example HTML file and web demo: https://1tsnakers.github.io/Progressi
 </html>
 
 ```
-In this example, the images are:
+In the web demo example, the images are:
 <details>
 <br>
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/330px-Coat_of_arms_of_Mexico.svg.png" alt="drawing" width="160"/>
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/529px-Coat_of_arms_of_Mexico.svg.png" alt="drawing" width="160"/>
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/847px-Coat_of_arms_of_Mexico.svg.png" alt="drawing" width="160"/>
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/1129px-Coat_of_arms_of_Mexico.svg.png" alt="drawing" width="160"/>
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Coat_of_arms_of_Mexico.svg/2259px-Coat_of_arms_of_Mexico.svg.png" alt="drawing" width="160"/>
+<img src="https://raw.githubusercontent.com/1TSnakers/ProgressiveImageLoader/refs/heads/main/images/pixel_degraded_pngs/degraded_000.png" alt="drawing" width="160"/>
+<img src="https://raw.githubusercontent.com/1TSnakers/ProgressiveImageLoader/refs/heads/main/images/pixel_degraded_pngs/degraded_012.png" alt="drawing" width="160"/>
+<img src="https://raw.githubusercontent.com/1TSnakers/ProgressiveImageLoader/refs/heads/main/images/pixel_degraded_pngs/degraded_025.png" alt="drawing" width="160"/>
+<img src="https://raw.githubusercontent.com/1TSnakers/ProgressiveImageLoader/refs/heads/main/images/pixel_degraded_pngs/degraded_037.png" alt="drawing" width="160"/>
+<img src="https://raw.githubusercontent.com/1TSnakers/ProgressiveImageLoader/refs/heads/main/images/pixel_degraded_pngs/degraded_050.png" alt="drawing" width="160"/>
+<img src="https://raw.githubusercontent.com/1TSnakers/ProgressiveImageLoader/refs/heads/main/images/pixel_degraded_pngs/degraded_062.png" alt="drawing" width="160"/>
+<img src="https://raw.githubusercontent.com/1TSnakers/ProgressiveImageLoader/refs/heads/main/images/pixel_degraded_pngs/degraded_075.png" alt="drawing" width="160"/>
+<img src="https://raw.githubusercontent.com/1TSnakers/ProgressiveImageLoader/refs/heads/main/images/pixel_degraded_pngs/degraded_087.png" alt="drawing" width="160"/>
+<img src="https://raw.githubusercontent.com/1TSnakers/ProgressiveImageLoader/refs/heads/main/images/pixel_degraded_pngs/degraded_100.png" alt="drawing" width="160"/>
 <br>
-Courtesy of wikipedia
+Courtesy of a funny image on https://random.dog
 </details>
 Feel free to improve my bad code!
