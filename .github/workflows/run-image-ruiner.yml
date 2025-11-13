@@ -40,9 +40,9 @@ jobs:
           git config user.email "actions@github.com"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
 
-      - name: Commit and push degraded images
-        working-directory: images
+      - name: Commit and push degraded images and JS list
         run: |
-          git add pixel_degraded_pngs
-          git diff --cached --quiet || git commit -m "Add/update pixel-degraded images"
+          git add images/output/*.png
+          git add images/image_list.js
+          git diff --cached --quiet || git commit -m "Add/update pixel-degraded images and JS list"
           git push origin HEAD:main
