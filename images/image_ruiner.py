@@ -49,7 +49,7 @@ def pixel_degrade_png(image_path, output_dir="images/output", steps=8):
 
 if __name__ == "__main__":
     pixel_degrade_png(
-        image_path="images/sample.png",   # make sure this path is correct
-        output_dir="images/output",
+        image_path="sample.png",   # make sure this path is correct
+        output_dir="output",
         steps=8                           # use steps instead of num_outputs
     )
