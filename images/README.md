@@ -99,4 +99,4 @@ pixel_degrade_png(
 ```
 Here is an example image made by the program:
 
-![](images/pixel_degraded_pngs/degraded_100.png)
+![](pixel_degraded_pngs/degraded_100.png)
