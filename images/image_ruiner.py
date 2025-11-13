@@ -38,7 +38,7 @@ def pixel_degrade_png(image_path, output_dir="images/output", steps=8):
         images.append(f"{output_dir}/{filename}")
 
     # Save JS array in images/
-    js_path = os.path.join("images", "image_list.js")
+    js_path = "image_list.js"
     with open(js_path, "w") as f:
         f.write("const imageList = [\n")
         for path in images:
