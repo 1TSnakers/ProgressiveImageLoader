@@ -80,6 +80,6 @@ if __name__ == "__main__":
     pixel_degrade_png(
         image_path="sample.png",
         steps=8,
-        label_size=80,
+        label_size=40,
         font_file="GoogleSansCode-Regular.ttf"
     )
