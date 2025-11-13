@@ -86,5 +86,5 @@ if __name__ == "__main__":
         label_size=40,
         font_file="GoogleSansCode-Regular.ttf",
         label_prefix="Quality reduced by: ",
-        show_label=False
+        show_label=True
     )
