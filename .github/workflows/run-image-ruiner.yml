@@ -42,7 +42,7 @@ jobs:
 
       - name: Commit and push degraded images and JS list
         run: |
-          git add images/output/*.png
+          git add images/pixel_degraded_pngs/*.png
           git add images/image_list.js
           git diff --cached --quiet || git commit -m "Add/update pixel-degraded images and JS list"
           git push origin HEAD:main
