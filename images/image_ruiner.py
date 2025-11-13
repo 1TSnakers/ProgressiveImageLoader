@@ -1,7 +1,8 @@
 import os
+import shutil
 from PIL import Image, ImageDraw, ImageFont
 
-def pixel_degrade_png(image_path, output_dir="pixel_degraded_pngs", steps=8, label_size=60):
+def pixel_degrade_png(image_path, output_dir="pixel_degraded_pngs", steps=8, label_size=60, font_path=None):
     """
     Degrades an image in steps and adds a percentage label in the bottom-left corner.
 
@@ -10,31 +11,39 @@ def pixel_degrade_png(image_path, output_dir="pixel_degraded_pngs", steps=8, lab
     - output_dir: str, directory to save degraded images (relative to /images)
     - steps: int, number of degradation steps
     - label_size: int, font size for the percentage label
+    - font_path: str, optional path to a .ttf font file
     """
+    # Clear old images
+    if os.path.exists(output_dir):
+        shutil.rmtree(output_dir)
     os.makedirs(output_dir, exist_ok=True)
-
-    # Remove old images
-    for file in os.listdir(output_dir):
-        if file.endswith(".png"):
-            os.remove(os.path.join(output_dir, file))
 
     # Load the original image
     img = Image.open(image_path)
     original_size = img.size
     images = []
 
+    # Load font
+    if font_path is None:
+        # Try common system fonts
+        possible_fonts = [
+            "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",  # Linux
+            "/Library/Fonts/Arial.ttf",                               # macOS
+            "C:/Windows/Fonts/arial.ttf"                              # Windows
+        ]
+        font_path = next((f for f in possible_fonts if os.path.exists(f)), None)
+    try:
+        font = ImageFont.truetype(font_path, label_size) if font_path else ImageFont.load_default()
+    except:
+        font = ImageFont.load_default()
+
     for i in range(steps + 1):
         # Calculate scaled size (pixelated effect)
         scale = max(1, int(original_size[0] * (1 - (i / steps) * 0.9)))
         degraded = img.resize((scale, int(scale * original_size[1] / original_size[0]))).resize(original_size)
 
-        # Draw the label
+        # Draw label
         draw = ImageDraw.Draw(degraded)
-        try:
-            font = ImageFont.truetype("arial.ttf", label_size)
-        except:
-            font = ImageFont.load_default()
-
         label = f"{int((i / steps) * 100)}%"
         text_w, text_h = draw.textbbox((0, 0), label, font=font)[2:]
         margin = 20
@@ -42,7 +51,7 @@ def pixel_degrade_png(image_path, output_dir="pixel_degraded_pngs", steps=8, lab
         padding_y = 10
         position = (margin, original_size[1] - text_h - margin)
 
-        # Draw semi-transparent background for text
+        # Semi-transparent background
         draw.rectangle(
             [position, (position[0] + text_w + padding_x, position[1] + text_h + padding_y)],
             fill=(0, 0, 0, 150)
@@ -59,7 +68,7 @@ def pixel_degrade_png(image_path, output_dir="pixel_degraded_pngs", steps=8, lab
         filepath = os.path.join(output_dir, filename)
         degraded.save(filepath)
 
-        # Add path for JS array (include "images/" for GitHub Pages)
+        # Add path for JS array (GitHub Pages expects "images/" prefix)
         images.append(f"images/{output_dir}/{filename}")
 
     # Save JS array in /images
@@ -77,5 +86,6 @@ if __name__ == "__main__":
     pixel_degrade_png(
         image_path="sample.png",  # must exist in /images
         steps=8,
-        label_size=160  # change this to make labels bigger or smaller
+        label_size=80,            # change this to make labels bigger/smaller
+        font_path=None             # optional: path to .ttf font file
     )
