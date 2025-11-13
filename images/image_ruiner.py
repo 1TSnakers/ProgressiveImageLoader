@@ -1,7 +1,8 @@
 import os
 from PIL import Image, ImageDraw, ImageFont
 
-def pixel_degrade_png(image_path, output_dir="images/output", steps=8):
+def pixel_degrade_png(image_path, output_dir="output", steps=8):
+    # Make sure output folder exists inside /images
     os.makedirs(output_dir, exist_ok=True)
 
     # Remove old images
@@ -37,7 +38,7 @@ def pixel_degrade_png(image_path, output_dir="images/output", steps=8):
         degraded.save(filepath)
         images.append(f"{output_dir}/{filename}")
 
-    # Save JS array in the root of the repo
+    # Save JS array in the same folder as the script (/images/)
     js_path = os.path.join(os.getcwd(), "image_list.js")
     with open(js_path, "w") as f:
         f.write("const imageList = [\n")
@@ -45,11 +46,12 @@ def pixel_degrade_png(image_path, output_dir="images/output", steps=8):
             f.write(f'  "{path}",\n')
         f.write("];\n\nexport default imageList;\n")
 
-    print(f"Saved {len(images)} images and image_list.js in 'images/'")
+    print(f"Saved {len(images)} images in '{output_dir}' and image_list.js at: {os.path.abspath(js_path)}")
 
 if __name__ == "__main__":
+    # Since script runs in /images, use relative path to sample.png
     pixel_degrade_png(
-        image_path="sample.png",   # adjust if needed
+        image_path="sample.png",
         output_dir="output",
         steps=8
     )
