@@ -69,7 +69,7 @@ def pixel_degrade_png(image_path, output_dir, num_levels=8):
 
 if __name__ == "__main__":
     pixel_degrade_png(
-        image_path="images/sample.png",
-        output_dir="images/pixel_degraded_pngs",
+        image_path="sample.png",
+        output_dir="pixel_degraded_pngs",
         num_levels=8
     )
