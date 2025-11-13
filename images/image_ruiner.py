@@ -26,17 +26,25 @@ def pixel_degrade_png(image_path, output_dir="pixel_degraded_pngs", steps=8):
         # Draw percentage label
         draw = ImageDraw.Draw(degraded)
         try:
-            font = ImageFont.truetype("arial.ttf", 30)
+            font = ImageFont.truetype("arial.ttf", 60)  # bigger font
         except:
             font = ImageFont.load_default()
-
-        label = f"{percent}%"
+        
+        label = f"{int((i / steps) * 100)}%"
         text_w, text_h = draw.textbbox((0, 0), label, font=font)[2:]
-        margin = 10
+        margin = 20  # more margin from edges
+        padding_x = 15
+        padding_y = 10
+        
         position = (margin, original_size[1] - text_h - margin)
+        
+        # draw background rectangle with bigger padding
+        draw.rectangle(
+            [position, (position[0] + text_w + padding_x, position[1] + text_h + padding_y)],
+            fill=(0, 0, 0, 150)
+        )
+        draw.text((position[0] + padding_x//2, position[1] + padding_y//2), label, font=font, fill=(255, 255, 255))
 
-        draw.rectangle([position, (position[0] + text_w + 10, position[1] + text_h + 5)], fill=(0, 0, 0, 150))
-        draw.text((position[0] + 5, position[1]), label, font=font, fill=(255, 255, 255))
 
         # Save file using percentage in the name
         filename = f"degraded_{percent}.png"
