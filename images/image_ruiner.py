@@ -49,9 +49,10 @@ def pixel_degrade_png(image_path, output_dir, steps=8, min_scale=0.1, enlarge_ba
 # Example usage
 if __name__ == "__main__":
     pixel_degrade_png(
-        "images/sample.png",
-        "images/pixel_degraded_pngs",
+        "sample.png",
+        "pixel_degraded_pngs",
         steps=8,
         min_scale=0.1,
         enlarge_back=False
     )
+
