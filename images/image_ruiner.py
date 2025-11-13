@@ -51,6 +51,5 @@ if __name__ == "__main__":
     pixel_degrade_png(
         image_path="sample.png",
         output_dir="output",
-        label="Degraded",
         num_outputs=8
     )
