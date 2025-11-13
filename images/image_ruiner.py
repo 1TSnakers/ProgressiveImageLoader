@@ -31,20 +31,26 @@ def pixel_degrade_png(image_path, output_dir, steps=8, min_scale=0.1, enlarge_ba
             degraded = degraded.resize((width, height), Image.NEAREST)
 
         # Add a small label in the top-left corner
+       # Add a small label in the top-left corner
         draw = ImageDraw.Draw(degraded)
         try:
             font = ImageFont.truetype("arial.ttf", size=int(width * 0.05))
         except:
             font = ImageFont.load_default()
+        
         label = f"{percentages[idx]}%"
-        text_size = draw.textsize(label, font=font)
+        
+        # Use textbbox to get the text size
+        bbox = draw.textbbox((0, 0), label, font=font)
+        text_width = bbox[2] - bbox[0]
+        text_height = bbox[3] - bbox[1]
+        
         padding = int(width * 0.02)
-        draw.rectangle([padding-2, padding-2, text_size[0]+padding+2, text_size[1]+padding+2], fill=(0,0,0,180))
+        draw.rectangle(
+            [padding-2, padding-2, text_width+padding+2, text_height+padding+2],
+            fill=(0, 0, 0, 180)
+        )
         draw.text((padding, padding), label, fill="white", font=font)
-
-        # Save image
-        output_path = os.path.join(output_dir, f"degraded_{percentages[idx]}.png")
-        degraded.save(output_path)
 
 # Example usage
 if __name__ == "__main__":
