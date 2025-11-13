@@ -15,18 +15,19 @@
   <script src="progressive-image-loader.js"></script>
 
   <script type="module">
-    // Just an automation tool, you can ignore
-    // I have a workflow that creates bad images and makes a list out of them
     import imageList from "./images/image_list.js";
-    
-    // Instantiate the loader
+  
+    const container = document.getElementById("image-container");
+    container.innerHTML = `<img src="${imageList[0]}" style="width:100%;height:auto;">`;
+  
     new ProgressiveImageLoader({
-      container: document.getElementById("image-container"),
+      container: container,
       images: imageList,
-      width: 1800,       // optional
-      fadeDuration: 0, // optional
-      disableCache: true // optional
+      width: 1800,
+      fadeDuration: 0,
+      disableCache: true
     });
   </script>
+
 </body>
 </html>
