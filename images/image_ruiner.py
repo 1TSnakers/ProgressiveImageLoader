@@ -1,82 +1,59 @@
 import os
-import shutil
 from PIL import Image, ImageDraw, ImageFont
+import random
 
-def pixel_degrade_png(image_path, output_dir, num_levels=8):
-    # Delete old images if the folder exists
-    if os.path.exists(output_dir):
-        shutil.rmtree(output_dir)
+def pixel_degrade_png(image_path, output_dir, label, num_outputs=5, degrade_factor=0.7):
     os.makedirs(output_dir, exist_ok=True)
 
-    img = Image.open(image_path)
+    # Delete all old images in the output folder
+    for f in os.listdir(output_dir):
+        if f.endswith(".png"):
+            os.remove(os.path.join(output_dir, f))
+
+    img = Image.open(image_path).convert("RGB")
     width, height = img.size
+    degraded_images = []
 
-    # Define degradation levels including 100% (original)
-    percentages = [100 - i * int(100 / (num_levels - 1)) for i in range(num_levels)]
-    percentages.reverse()  # start with 0%, then more degraded
+    for i in range(num_outputs):
+        degraded = img.copy()
 
-    for idx, percent in enumerate(percentages):
-        # Calculate reduced size
-        scale = max(1, percent / 100)
-        new_size = (max(1, int(width * scale)), max(1, int(height * scale)))
+        # Random pixel degradation
+        for _ in range(int(width * height * degrade_factor * random.uniform(0.05, 0.2))):
+            x, y = random.randint(0, width - 1), random.randint(0, height - 1)
+            degraded.putpixel((x, y), tuple(random.randint(0, 255) for _ in range(3)))
 
-        # Resize down and back up
-        degraded = img.resize(new_size, Image.NEAREST).resize((width, height), Image.NEAREST)
-
-        # Add label text (bigger and bottom-left)
         draw = ImageDraw.Draw(degraded)
         try:
-            font = ImageFont.truetype("arial.ttf", size=int(width * 0.08))
+            font = ImageFont.truetype("arial.ttf", 24)
         except:
             font = ImageFont.load_default()
 
-        label = f"{100 - percent}%"
-        bbox = draw.textbbox((0, 0), label, font=font)
-        text_width = bbox[2] - bbox[0]
-        text_height = bbox[3] - bbox[1]
+        # Draw label bottom-left corner with margin
+        text = f"{label} {i+1}"
+        text_w, text_h = draw.textbbox((0, 0), text, font=font)[2:]
+        margin = 10
+        draw.text((margin, height - text_h - margin), text, fill=(255, 255, 255), font=font)
 
-        padding = int(width * 0.03)
-        x = padding
-        y = height - text_height - padding
-
-        # Draw black rectangle behind text
-        draw.rectangle(
-            [x - 6, y - 6, x + text_width + 6, y + text_height + 6],
-            fill=(0, 0, 0, 200)
-        )
-        draw.text((x, y), label, fill="white", font=font)
-
-        # Save image
-        output_path = os.path.join(output_dir, f"degraded_{100 - percent}.png")
+        # Consistent filename: degraded_0001.png, degraded_0002.png, etc.
+        filename = f"degraded_{i+1:04d}.png"
+        output_path = os.path.join(output_dir, filename)
         degraded.save(output_path)
+        degraded_images.append(filename)
 
-    # Save labeled original (0%)
-    labeled_original = img.copy()
-    draw = ImageDraw.Draw(labeled_original)
-    try:
-        font = ImageFont.truetype("arial.ttf", size=int(width * 0.08))
-    except:
-        font = ImageFont.load_default()
+    # Create JS file with array of images
+    js_array_path = os.path.join(output_dir, "image_list.js")
+    with open(js_array_path, "w") as f:
+        f.write("const imageList = [\n")
+        for name in degraded_images:
+            f.write(f'    "{name}",\n')
+        f.write("];\n\nexport default imageList;\n")
 
-    label = "0%"
-    bbox = draw.textbbox((0, 0), label, font=font)
-    text_width = bbox[2] - bbox[0]
-    text_height = bbox[3] - bbox[1]
-
-    padding = int(width * 0.03)
-    x = padding
-    y = height - text_height - padding
-    draw.rectangle(
-        [x - 6, y - 6, x + text_width + 6, y + text_height + 6],
-        fill=(0, 0, 0, 200)
-    )
-    draw.text((x, y), label, fill="white", font=font)
-
-    labeled_original.save(os.path.join(output_dir, "original.png"))
+    print(f"Created {num_outputs} degraded images and image_list.js")
 
 if __name__ == "__main__":
     pixel_degrade_png(
         image_path="sample.png",
-        output_dir="pixel_degraded_pngs",
-        num_levels=8
+        output_dir="output",
+        label="Degraded",
+        num_outputs=5
     )
