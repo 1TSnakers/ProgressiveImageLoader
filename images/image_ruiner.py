@@ -19,10 +19,10 @@ def pixel_degrade_png(image_path, output_dir, num_levels=8):
         # Resize down and back up
         degraded = img.resize(new_size, Image.NEAREST).resize((width, height), Image.NEAREST)
 
-        # Add label text
+        # Add label text (bigger and bottom-left)
         draw = ImageDraw.Draw(degraded)
         try:
-            font = ImageFont.truetype("arial.ttf", size=int(width * 0.05))
+            font = ImageFont.truetype("arial.ttf", size=int(width * 0.08))
         except:
             font = ImageFont.load_default()
 
@@ -31,25 +31,26 @@ def pixel_degrade_png(image_path, output_dir, num_levels=8):
         text_width = bbox[2] - bbox[0]
         text_height = bbox[3] - bbox[1]
 
-        padding = int(width * 0.02)
-        box_coords = [
-            padding - 4,
-            padding - 4,
-            text_width + padding + 4,
-            text_height + padding + 4
-        ]
-        draw.rectangle(box_coords, fill=(0, 0, 0, 180))
-        draw.text((padding, padding), label, fill="white", font=font)
+        padding = int(width * 0.03)
+        x = padding
+        y = height - text_height - padding
+
+        # Draw black rectangle behind text
+        draw.rectangle(
+            [x - 6, y - 6, x + text_width + 6, y + text_height + 6],
+            fill=(0, 0, 0, 200)
+        )
+        draw.text((x, y), label, fill="white", font=font)
 
         # Save image
         output_path = os.path.join(output_dir, f"degraded_{100 - percent}.png")
         degraded.save(output_path)
 
-    # Save original labeled as 0%
+    # Save labeled original (0%)
     labeled_original = img.copy()
     draw = ImageDraw.Draw(labeled_original)
     try:
-        font = ImageFont.truetype("arial.ttf", size=int(width * 0.05))
+        font = ImageFont.truetype("arial.ttf", size=int(width * 0.08))
     except:
         font = ImageFont.load_default()
 
@@ -58,12 +59,14 @@ def pixel_degrade_png(image_path, output_dir, num_levels=8):
     text_width = bbox[2] - bbox[0]
     text_height = bbox[3] - bbox[1]
 
-    padding = int(width * 0.02)
+    padding = int(width * 0.03)
+    x = padding
+    y = height - text_height - padding
     draw.rectangle(
-        [padding - 4, padding - 4, text_width + padding + 4, text_height + padding + 4],
-        fill=(0, 0, 0, 180)
+        [x - 6, y - 6, x + text_width + 6, y + text_height + 6],
+        fill=(0, 0, 0, 200)
     )
-    draw.text((padding, padding), label, fill="white", font=font)
+    draw.text((x, y), label, fill="white", font=font)
 
     labeled_original.save(os.path.join(output_dir, "original.png"))
 
