@@ -1,4 +1,7 @@
 # Progressive Image Loader
+
+![](https://komarev.com/ghpvc/?username=1TSnakers-ProgressiveImageLoader&label=Repository+views)
+
 Loads images progressively. Level of detail for images
 
 You put images into an array in order of detail (least to most)
