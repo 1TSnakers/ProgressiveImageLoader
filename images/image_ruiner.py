@@ -1,64 +1,75 @@
-from PIL import Image, ImageDraw, ImageFont
 import os
+from PIL import Image, ImageDraw, ImageFont
 
-def pixel_degrade_png(image_path, output_dir, steps=8, min_scale=0.1, enlarge_back=False):
-    """
-    Create progressively degraded versions of a PNG image with a corner label for degradation percentage.
-
-    Parameters:
-    - image_path: str, path to the original PNG
-    - output_dir: str, directory to save degraded PNGs
-    - steps: int, number of degradation steps
-    - min_scale: float, smallest scale factor for the last degraded image
-    - enlarge_back: bool, whether to enlarge back to original size after downscaling
-    """
-
+def pixel_degrade_png(image_path, output_dir, num_levels=8):
     os.makedirs(output_dir, exist_ok=True)
+
     img = Image.open(image_path)
     width, height = img.size
 
-    # Generate degradation scales (including the original)
-    scales = [1.0 - i * (1.0 - min_scale) / (steps-1) for i in range(steps)]
-    percentages = [0] + [int((1-s)*100) for s in scales[1:]]
+    # Define degradation levels including 100% (original)
+    percentages = [100 - i * int(100 / (num_levels - 1)) for i in range(num_levels)]
+    percentages.reverse()  # start with 0%, then more degraded
 
-    for idx, scale in enumerate(scales):
-        new_w = max(1, int(width * scale))
-        new_h = max(1, int(height * scale))
+    for idx, percent in enumerate(percentages):
+        # Calculate reduced size
+        scale = max(1, percent / 100)
+        new_size = (max(1, int(width * scale)), max(1, int(height * scale)))
 
-        degraded = img.resize((new_w, new_h), Image.NEAREST)
+        # Resize down and back up
+        degraded = img.resize(new_size, Image.NEAREST).resize((width, height), Image.NEAREST)
 
-        if enlarge_back:
-            degraded = degraded.resize((width, height), Image.NEAREST)
-
-        # Add a small label in the top-left corner
-       # Add a small label in the top-left corner
+        # Add label text
         draw = ImageDraw.Draw(degraded)
         try:
             font = ImageFont.truetype("arial.ttf", size=int(width * 0.05))
         except:
             font = ImageFont.load_default()
-        
-        label = f"{percentages[idx]}%"
-        
-        # Use textbbox to get the text size
+
+        label = f"{100 - percent}%"
         bbox = draw.textbbox((0, 0), label, font=font)
         text_width = bbox[2] - bbox[0]
         text_height = bbox[3] - bbox[1]
-        
+
         padding = int(width * 0.02)
-        draw.rectangle(
-            [padding-2, padding-2, text_width+padding+2, text_height+padding+2],
-            fill=(0, 0, 0, 180)
-        )
+        box_coords = [
+            padding - 4,
+            padding - 4,
+            text_width + padding + 4,
+            text_height + padding + 4
+        ]
+        draw.rectangle(box_coords, fill=(0, 0, 0, 180))
         draw.text((padding, padding), label, fill="white", font=font)
 
-# Example usage
+        # Save image
+        output_path = os.path.join(output_dir, f"degraded_{100 - percent}.png")
+        degraded.save(output_path)
+
+    # Save original labeled as 0%
+    labeled_original = img.copy()
+    draw = ImageDraw.Draw(labeled_original)
+    try:
+        font = ImageFont.truetype("arial.ttf", size=int(width * 0.05))
+    except:
+        font = ImageFont.load_default()
+
+    label = "0%"
+    bbox = draw.textbbox((0, 0), label, font=font)
+    text_width = bbox[2] - bbox[0]
+    text_height = bbox[3] - bbox[1]
+
+    padding = int(width * 0.02)
+    draw.rectangle(
+        [padding - 4, padding - 4, text_width + padding + 4, text_height + padding + 4],
+        fill=(0, 0, 0, 180)
+    )
+    draw.text((padding, padding), label, fill="white", font=font)
+
+    labeled_original.save(os.path.join(output_dir, "original.png"))
+
 if __name__ == "__main__":
     pixel_degrade_png(
-        "sample.png",
-        "pixel_degraded_pngs",
-        steps=8,
-        min_scale=0.1,
-        enlarge_back=False
+        image_path="images/sample.png",
+        output_dir="images/pixel_degraded_pngs",
+        num_levels=8
     )
-
