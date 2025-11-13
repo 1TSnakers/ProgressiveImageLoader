@@ -2,7 +2,7 @@ import os
 import shutil
 from PIL import Image, ImageDraw, ImageFont
 
-def pixel_degrade_png(image_path, output_dir="pixel_degraded_pngs", steps=8, label_size=60, font_file="GoogleSansCode-Regular.ttf"):
+def pixel_degrade_png(image_path, output_dir="pixel_degraded_pngs", steps=8, label_size=60, font_file="GoogleSansCode-Regular.ttf", label_prefix="Quality reduced by: "):
     """
     Degrades an image in steps and adds a percentage label in the bottom-left corner using a custom font.
 
@@ -12,6 +12,7 @@ def pixel_degrade_png(image_path, output_dir="pixel_degraded_pngs", steps=8, lab
     - steps: int, number of degradation steps
     - label_size: int, font size for the percentage label
     - font_file: str, path to the .ttf font file (relative to /images)
+    - label_prefix: str, text to prefix the percentage label
     """
     # Clear old images
     if os.path.exists(output_dir):
@@ -38,7 +39,7 @@ def pixel_degrade_png(image_path, output_dir="pixel_degraded_pngs", steps=8, lab
 
         # Draw label
         draw = ImageDraw.Draw(degraded)
-        label = f"{int((i / steps) * 100)}%"
+        label = f"{label_prefix}{int((i / steps) * 100)}%"
         text_w, text_h = draw.textbbox((0, 0), label, font=font)[2:]
         margin = 20
         padding_x = 15
@@ -63,8 +64,11 @@ def pixel_degrade_png(image_path, output_dir="pixel_degraded_pngs", steps=8, lab
         filepath = os.path.join(output_dir, filename)
         degraded.save(filepath)
 
-        # Add path for JS array
+        # Add path for JS array (prepend "images/" for GitHub Pages)
         images.append(f"images/{output_dir}/{filename}")
+
+    # Reverse array so lowest-quality is first
+    images.reverse()
 
     # Save JS array
     js_path = os.path.join(os.curdir, "image_list.js")
@@ -81,5 +85,6 @@ if __name__ == "__main__":
         image_path="sample.png",
         steps=8,
         label_size=40,
-        font_file="GoogleSansCode-Regular.ttf"
+        font_file="GoogleSansCode-Regular.ttf",
+        label_prefix="Quality reduced by: "
     )
