@@ -1,13 +1,13 @@
 const imageList = [
-  "output/degraded_000.png",
-  "output/degraded_001.png",
-  "output/degraded_002.png",
-  "output/degraded_003.png",
-  "output/degraded_004.png",
-  "output/degraded_005.png",
-  "output/degraded_006.png",
-  "output/degraded_007.png",
-  "output/degraded_008.png",
+  "pixel_degraded_pngs/degraded_0.png",
+  "pixel_degraded_pngs/degraded_12.png",
+  "pixel_degraded_pngs/degraded_25.png",
+  "pixel_degraded_pngs/degraded_37.png",
+  "pixel_degraded_pngs/degraded_50.png",
+  "pixel_degraded_pngs/degraded_62.png",
+  "pixel_degraded_pngs/degraded_75.png",
+  "pixel_degraded_pngs/degraded_87.png",
+  "pixel_degraded_pngs/degraded_100.png",
 ];
 
 export default imageList;
