@@ -1,7 +1,11 @@
 import os
+import shutil
 from PIL import Image, ImageDraw, ImageFont
 
 def pixel_degrade_png(image_path, output_dir, num_levels=8):
+    # Delete old images if the folder exists
+    if os.path.exists(output_dir):
+        shutil.rmtree(output_dir)
     os.makedirs(output_dir, exist_ok=True)
 
     img = Image.open(image_path)
@@ -72,7 +76,7 @@ def pixel_degrade_png(image_path, output_dir, num_levels=8):
 
 if __name__ == "__main__":
     pixel_degrade_png(
-        image_path="sample.png",
-        output_dir="pixel_degraded_pngs",
+        image_path="images/sample.png",
+        output_dir="images/pixel_degraded_pngs",
         num_levels=8
     )
