@@ -11,18 +11,6 @@ def pixel_degrade_png(
     label_prefix="Quality reduced by: ",
     show_label=True,  # ← NEW toggle
 ):
-    """
-    Degrades an image in steps and optionally adds a percentage label in the bottom-left corner.
-
-    Parameters:
-    - image_path: str, path to the input image (relative to /images)
-    - output_dir: str, directory to save degraded images (relative to /images)
-    - steps: int, number of degradation steps
-    - label_size: int, font size for the percentage label
-    - font_file: str, path to the .ttf font file (relative to /images)
-    - label_prefix: str, text to prefix the percentage label
-    - show_label: bool, whether to draw labels on images
-    """
     # Clear old images
     if os.path.exists(output_dir):
         shutil.rmtree(output_dir)
