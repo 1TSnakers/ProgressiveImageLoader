@@ -36,20 +36,39 @@ def pixel_degrade_png(
         font = ImageFont.load_default()
 
     for i in range(steps + 1):
-        # Pixelate by resizing down and back up
-        scale = max(1, int(original_size[0] * (1 - (i / steps) * 0.9)))
-        degraded = img.resize((scale, int(scale * original_size[1] / original_size[0]))).resize(original_size)
+
+        # Calculate degraded size
+        new_width = max(1, int(original_size[0] * (1 - (i / steps) * 0.9)))
+        new_height = int(new_width * original_size[1] / original_size[0])
+
+        # Compute scale ratio for font
+        scale_ratio = new_width / original_size[0]
+        dynamic_label_size = max(10, int(label_size * scale_ratio))
+
+        # Resize image once (no resize back up)
+        degraded = img.resize((new_width, new_height), Image.NEAREST)
+
+        # Load scaled font
+        try:
+            font = ImageFont.truetype(font_path, dynamic_label_size)
+        except:
+            font = ImageFont.load_default()
 
         if show_label:
             draw = ImageDraw.Draw(degraded)
             label = f"{label_prefix}{int((i / steps) * 100)}%"
-            text_w, text_h = draw.textbbox((0, 0), label, font=font)[2:]
+            bbox = draw.textbbox((0, 0), label, font=font)
+            text_w = bbox[2] - bbox[0]
+            text_h = bbox[3] - bbox[1]
+
             margin, padding_x, padding_y = 20, 15, 10
-            position = (margin, original_size[1] - text_h - margin)
+            position = (margin, degraded.size[1] - text_h - margin)
+
             draw.rectangle(
                 [position, (position[0] + text_w + padding_x, position[1] + text_h + padding_y)],
                 fill=(0, 0, 0, 150),
             )
+
             draw.text(
                 (position[0] + padding_x // 2, position[1] + padding_y // 2),
                 label,
@@ -90,7 +109,8 @@ pixel_degrade_png(
     - show_label: bool, whether to draw labels on images
     """
     image_path="sample.png",
-    steps=8, # 
+    output_dir="pixel_degraded_pngs",
+    steps=8,
     label_size=40,
     font_file="GoogleSansCode-Regular.ttf",
     label_prefix="Quality reduced by: ",

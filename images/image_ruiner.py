@@ -88,11 +88,11 @@ def pixel_degrade_png(
 
 if __name__ == "__main__":
     pixel_degrade_png(
-        image_path="images/sample.png",
-        output_dir="images/pixel_degraded_pngs",
+        image_path="sample.png",
+        output_dir="pixel_degraded_pngs",
         steps=8,
         label_size=40,
-        font_file="images/GoogleSansCode-Regular.ttf",
+        font_file="GoogleSansCode-Regular.ttf",
         label_prefix="Quality reduced by: ",
         show_label=True
     )
